@@ -136,6 +136,7 @@ UPROGS=\
 	$U/_grep\
 	$U/_init\
 	$U/_kill\
+	$U/_getfilenum\
 	$U/_ln\
 	$U/_ls\
 	$U/_mkdir\

@@ -29,6 +29,7 @@ entry("read");
 entry("write");
 entry("close");
 entry("kill");
+entry("getfilenum");
 entry("exec");
 entry("open");
 entry("mknod");
