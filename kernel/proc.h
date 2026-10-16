@@ -20,8 +20,7 @@ struct context {
 
 // Per-CPU state.
 struct cpu {
-  struct proc *proc;      // The process running on this cpu, or null.
-  int runtime; // Number of times this process runs
+  struct proc *proc; // The process running on this CPU
   struct context context; // swtch() here to enter scheduler().
   int noff;               // Depth of push_off() nesting.
   int intena;             // Were interrupts enabled before push_off()?
@@ -89,6 +88,9 @@ struct proc {
   int killed;           // If non-zero, have been killed
   int xstate;           // Exit status to be returned to parent's wait
   int pid;              // Process ID
+  int runtime; // Number of times this process runs
+  int pass;      // Tracks scheduling progress
+  int stride;    // Determines process priority
 
   // wait_lock must be held when using this:
   struct proc *parent; // Parent process

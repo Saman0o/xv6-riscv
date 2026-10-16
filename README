@@ -46,3 +46,35 @@ You will need a RISC-V "newlib" tool chain from
 https://github.com/riscv/riscv-gnu-toolchain, and qemu compiled for
 riscv64-softmmu.  Once they are installed, and in your shell
 search path, you can run "make qemu".
+
+
+ I modified the xv6 operating system to implement a stride scheduler. Instead of running processes in their original order, the scheduler chooses the runnable process with the lowest accumulated pass value.
+
+A smaller stride gives a process more CPU time, while a larger stride gives it less CPU time.
+
+I made the following changes to xv6:
+
+Added runtime, pass, and stride variables to the process structure. Initialized these values when a new process is created. Added a getpinfo() system call to retrieve process information, including process IDs, runtime, pass values, and the total pass. Added a setStride() system call that allows a process to change its stride. Modified scheduler() to select the runnable process with the lowest pass. Added a lock to coordinate scheduler selection and protect shared information. Added overflow protection that resets pass values when passTotal reaches 1,000,000.  Used the hardwork and getpinfo programs to test the scheduler.
+
+
+
+
+
+I ran three CPU-intensive processes with strides of 1, 2, and 4.
+
+The runtime increases recorded during testing were:
+
+Column 1	Column 2	Column 3	Column 4
+Stride	Runtime Increase	CPU Share	
+1	          1842	          57.13%	
+2	          921	          28.57%	
+4	          461	          14.30%	
+
+
+The expected CPU shares were 57.14%, 28.57%, and 14.29%.
+
+I also tried some invalid stride values. running hardwork 0 and hardwork 1000001 displayed Invalid stride as it should.
+
+From the tests it was clear that the stride scheduler was allocating CPU time based on the stride values supplied. Processes with tiny strides were given more scheduling turns, processes with large strides less.
+
+The scheduler was compiled and ran correctly under xv6. Overflow protection was implemented, but not individually tested, at the reset threshold.

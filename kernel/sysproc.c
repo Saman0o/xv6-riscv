@@ -119,3 +119,30 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64
+sys_getpinfo(void)
+{
+    // Stores the user's memory address.
+    uint64 p;
+
+    // Gets the pointer passed by the user program.
+    argaddr(0, &p);
+
+    // Calls getpinfo to collect process information.
+    return getpinfo((struct pstat *)p);
+}
+
+
+uint64
+sys_setStride(void)
+{
+    // Stores the stride value passed by the user.
+    int strideLength;
+
+    // Gets the first argument from the system call.
+    argint(0, &strideLength);
+
+    // Calls setStride to update the process.
+    return setStride(strideLength);
+}

@@ -9,6 +9,9 @@ struct spinlock;
 struct sleeplock;
 struct stat;
 struct superblock;
+struct pstat;
+
+
 
 // bio.c
 void            binit(void);
@@ -79,6 +82,8 @@ void            panic(char*) __attribute__((noreturn));
 void            printkinit(void);
 
 // proc.c
+int getpinfo(struct pstat *);
+int setStride(int);
 int             cpuid(void);
 void            kexit(int);
 int             kfork(void);
